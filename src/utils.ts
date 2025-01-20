@@ -16,7 +16,7 @@ import {
 	V4InnerToken,
 	V4ProofTemplate
 } from './model/types/index.js';
-import { TOKEN_PREFIX, TOKEN_VERSION } from './utils/Constants.js';
+import { BITCREDIT_PREFIX, BITCREDIT_UNIT, TOKEN_PREFIX, TOKEN_VERSION } from './utils/Constants.js';
 import { bytesToHex, hexToBytes } from '@noble/curves/abstract/utils';
 import { sha256 } from '@noble/hashes/sha256';
 import { decodeCBOR, encodeCBOR } from './cbor.js';
@@ -202,6 +202,14 @@ export function getEncodedTokenV3(token: Token): string {
 }
 
 /**
+ * Helper function to encode a v3 cashu token
+ * @param token to encode
+ * @returns encoded token
+ */
+export function getEncodedBitcreditTokenV3(token: Token): string {
+	return getEncodedTokenV3(token).replace(TOKEN_PREFIX, BITCREDIT_PREFIX);
+}
+/**
  * Helper function to encode a cashu token (defaults to v4 if keyset id allows it)
  * @param token
  * @param [opts]
@@ -212,6 +220,9 @@ export function getEncodedToken(token: Token, opts?: { version: 3 | 4 }): string
 		if (opts?.version === 4) {
 			throw new Error('can not encode to v4 token if proofs contain non-hex keyset id');
 		}
+    if (token.unit === BITCREDIT_UNIT) {
+      return getEncodedBitcreditTokenV3(token);
+    }
 		return getEncodedTokenV3(token);
 	}
 	return getEncodedTokenV4(token);
@@ -280,7 +291,10 @@ export function getEncodedTokenV4(token: Token): string {
  */
 export function getDecodedToken(token: string) {
 	// remove prefixes
-	const uriPrefixes = ['web+cashu://', 'cashu://', 'cashu:', 'cashu'];
+	const uriPrefixes = [
+    'web+cashu://', 'cashu://', 'cashu:', 'cashu', 
+    `web+${BITCREDIT_PREFIX}://`, `${BITCREDIT_PREFIX}://`, `${BITCREDIT_PREFIX}:`, BITCREDIT_PREFIX
+  ];
 	uriPrefixes.forEach((prefix: string) => {
 		if (!token.startsWith(prefix)) {
 			return;

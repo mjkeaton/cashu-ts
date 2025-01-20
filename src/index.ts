@@ -5,6 +5,7 @@ import { setGlobalRequestOptions } from './request.js';
 import {
 	getEncodedToken,
 	getEncodedTokenV4,
+  getEncodedBitcreditTokenV3,
 	getDecodedToken,
 	deriveKeysetId,
 	decodePaymentRequest
@@ -19,6 +20,7 @@ export {
 	getDecodedToken,
 	getEncodedToken,
 	getEncodedTokenV4,
+  getEncodedBitcreditTokenV3,
 	decodePaymentRequest,
 	deriveKeysetId,
 	setGlobalRequestOptions

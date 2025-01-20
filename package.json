@@ -19,7 +19,8 @@
 		"lint": "eslint --ext .js,.ts . --fix",
 		"format": "prettier --write .",
 		"check-format": "prettier --check .",
-		"typedoc": "typedoc src/index.ts"
+		"typedoc": "typedoc src/index.ts",
+		"prepare": "npm run compile"
 	},
 	"keywords": [
 		"cashu"
